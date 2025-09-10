@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',# 追加したアプリ
 ]
 
 # 自動でセキュリティとか色々やってくれてる　特に覚えなくていいらしい
