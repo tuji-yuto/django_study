@@ -8,15 +8,15 @@
   <body>
     <div>
       <h1>Django学習</h1>
-      <form id="loginForm">
-        <!-- placeholderはinput要素の中に表示される薄い文字 -->
-        <input type="text" id="username" placeholder="ユーザー名">
-        <input type="password" id="password" placeholder="パスワード">
-        <button type="button">ログイン</button>
+        <form method="POST" action="/accounts/process/">        <!-- placeholderはinput要素の中に表示される薄い文字 -->
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="ユーザー名">
+        <input type="password" name="password" placeholder="パスワード">
+        <button type="submit">ログイン</button>
       </form>
     </div>
     <!-- JavaScriptのコードはここに書く -->
-    <scrips>
-    </scrips>
+    <script>
+    </script>
   </body>
 </html>

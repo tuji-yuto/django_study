@@ -66,7 +66,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # 追加：テンプレートディレクトリを指定
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,3 +133,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# カスタムユーザーを設定した場合ここに書く
+# カスタムユーザーじゃない場合は内部的にデフォルトユーザーを使うような設定になっているので特に書かなくていい
+AUTH_USER_MODEL = 'accounts.CustomUser'
