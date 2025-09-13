@@ -8,15 +8,33 @@
   <body>
     <div>
       <h1>Django学習</h1>
-        <form method="POST" action="/accounts/process/">        <!-- placeholderはinput要素の中に表示される薄い文字 -->
+      <form method="POST" action="/accounts/process/">
+        <!-- placeholderはinput要素の中に表示される薄い文字 -->
         {% csrf_token %}
-        <input type="text" name="username" placeholder="ユーザー名">
-        <input type="password" name="password" placeholder="パスワード">
+        <input type="text" name="username" placeholder="ユーザー名" />
+        <input type="password" name="password" placeholder="パスワード" />
         <button type="submit">ログイン</button>
       </form>
     </div>
     <!-- JavaScriptのコードはここに書く -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+      $("form").on("submit", function (e) {
+        e.preventDefault();
+        
+        $.ajax({
+          url: "/accounts/process/",
+          type: "POST",
+          data: { 
+            username: $("input[name='username']").val(),
+            password: $("input[name='password']").val(),
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+          },
+          success: function(response) {
+              alert("ログイン成功");
+          },
+        })
+      });
     </script>
   </body>
 </html>

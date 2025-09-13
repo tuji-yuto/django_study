@@ -2,7 +2,7 @@ from django.http import JsonResponse #javaScriptで受け取れるようにす�
 import json # json形式を扱うための様々な関数が入っている
 from django.shortcuts import render # HTMLテンプレートを処理してHTTPレスポンスを返す関数
 from django.contrib.auth import authenticate, login# ユーザー認証とログイン処理を行う関数
-  from django.shortcuts import redirect# HTTP形式でのページ移動
+from django.shortcuts import redirect# HTTP形式でのページ移動
 
 # Create your views here.
 
@@ -19,8 +19,10 @@ def login_process(request):# request : ユーザーから送られてくる情�
 
             if user is not None:#成功した場合   not None ＝ Noneじゃない、つまりuserオブジェクトがある
                 login(request, user)
+                print("ログイン成功")
                 return redirect('login_page')#login_page　urls.pyのname属性　importしてるわけじゃないけどなんか使えるらしい
 
             else:# 失敗した場合
+                print("ログイン失敗")
                 return render(request, 'login.html',{'error':'ログインに失敗しました'})#login_page　urls.pyのname属性
 
