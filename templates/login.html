@@ -4,37 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Django学習</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+    </style>
   </head>
   <body>
-    <div>
-      <h1>Django学習</h1>
-      <form method="POST" action="/accounts/process/">
+    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light">
+      <div class="card shadow" style="width:400px;">
+        <div class="card-body p-5">
+          <h1 class="card-title text-center text-primary mb-4">Django学習</h1>
+          <form id="login-form-input" method="POST" action="/accounts/process/">
         <!-- placeholderはinput要素の中に表示される薄い文字 -->
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="ユーザー名" />
-        <input type="password" name="password" placeholder="パスワード" />
-        <button type="submit">ログイン</button>
-      </form>
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" name="username" placeholder="ユーザー名" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <input type="password" name="password" placeholder="パスワード" class="form-control" />
+            </div>
+          <button type="submit" class="btn btn-primary w-100">ログイン</button>
+        </form>
+      </div>
     </div>
     <!-- JavaScriptのコードはここに書く -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-      $("form").on("submit", function (e) {
-        e.preventDefault();
-        
+      $("form").on("submit", function (e) { // eは引数
+        e.preventDefault(); //通常の通信を行わないで　という意味。　これによりajax通信のみが行われる
+
         $.ajax({
-          url: "/accounts/process/",
-          type: "POST",
-          data: { 
+          url: "/accounts/process/",//djangoのurls.pyで設定したURL
+          type: "POST",//POSTメソッドで送信 どのメソッドかを指定
+          data: { // 送信するデータ
             username: $("input[name='username']").val(),
             password: $("input[name='password']").val(),
-            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
-          success: function(response) {
-              alert("ログイン成功");
+
+          success: function (response) {// 通信成功の時 httpが200で帰ってきた時　一つしか情報は返ってこないからパラメータは１つでいい。responseとしておくのが慣例
+            alert("ログイン成功: " + response.message);
           },
-        })
+
+          error: function(xhr, status, error){// 通信失敗の時 httpが400,500で帰ってきた時  3つ情報が返ってくるので3つパラメータが必要。 慣例的にxhr, status, errorとする
+            alert("ログイン失敗: " + JSON.parse(xhr.responseText).message); // サーバーからのエラーメッセージを表示　エラーの際json形式ではなく文字列形式で返ってくるのでJSON.parseでオブジェクトに変換してからmessageを取り出す
+          }
+        });
       });
+
     </script>
   </body>
 </html>

@@ -17,12 +17,10 @@ def login_process(request):# request : ユーザーから送られてくる情�
 
             user = authenticate(username=username, password=password)# ユーザー認証を行う。成功するとuserオブジェクトが返る。失敗するとNoneが返る。
 
-            if user is not None:#成功した場合   not None ＝ Noneじゃない、つまりuserオブジェクトがある
-                login(request, user)
-                print("ログイン成功")
-                return redirect('login_page')#login_page　urls.pyのname属性　importしてるわけじゃないけどなんか使えるらしい
-
-            else:# 失敗した場合
-                print("ログイン失敗")
-                return render(request, 'login.html',{'error':'ログインに失敗しました'})#login_page　urls.pyのname属性
-
+            if user is not None: # userがNoneじゃなかった場合
+                 login(request, user) # ログイン処理を行う
+                 print("ログイン成功") # 確認用。サーバーのコンソールに表示される。
+                 return JsonResponse({"status": "success","message":"ログインに成功しました"})
+            else:#失敗したとき
+                 print("ログイン失敗") # 確認用。サーバーのコンソールに表示される。
+                 return JsonResponse({"status": "error","message":"ログインに失敗しました"},status=400) # status=400は認証エラーを意味する
