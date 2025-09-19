@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -9,8 +10,8 @@
       rel="stylesheet"
     />
     <link
-      href="https://cdn.jsdelivr.net/npm/lobibox@1.2.7/dist/css/lobibox.min.css"
       rel="stylesheet"
+      href="{% static 'notifications/css/lobibox.min.css' %}"
     />
     <style></style>
   </head>
@@ -49,8 +50,10 @@
     </div>
     <!-- JavaScriptのコードはここに書く -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lobibox@1.2.7/dist/js/lobibox.min.js"></script>
+    <script src="{% static 'notifications/js/lobibox.js' %}"></script>
     <script>
+      const info_image = "{% static 'img/ok.png' %}";
+      const error_image = "{% static 'img/ng.png' %}";
       $("form").on("submit", function (e) {
         // eは引数
         e.preventDefault(); //通常の通信を行わないで　という意味。　これによりajax通信のみが行われる
@@ -67,20 +70,30 @@
 
           success: function (response) {
             // 通信成功の時 httpが200で帰ってきた時　一つしか情報は返ってこないからパラメータは１つでいい。responseとしておくのが慣例
-            Lobibox.notify("success", {
-              msg: response.message, // views.pyのreturn JsonResponse({'status': 'success', 'message': 'ログインに成功しました。'})のmessageが入る
+            Lobibox.notify("info", {
+              pauseDelayOnHover: true,
+              continueDelayOnInactiveTab: false,
               position: "top right",
+              title: "成功しました。",
+              msg: response.message,
+              sound: false,
+              img: info_image,
             });
-            setTimeout(function() {
-                window.location.href = "/"; // ホーム画面にリダイレクト
+            setTimeout(function () {
+              window.location.href = "/"; // ホーム画面にリダイレクト
             }, 1000); // 1秒後にリダイレクト
           },
 
           error: function (xhr, status, error) {
             // 通信失敗の時 httpが400,500で帰ってきた時  3つ情報が返ってくるので3つパラメータが必要。 慣例的にxhr, status, errorとする
             Lobibox.notify("error", {
-              msg: JSON.parse(xhr.responseText).message, // views.pyのreturn JsonResponse({'status': 'error', 'message': 'ユーザー名かパスワードが間違っています。'})のmessageが入る
+              pauseDelayOnHover: true,
+              continueDelayOnInactiveTab: false,
               position: "top right",
+              title: "失敗しました。",
+              msg: JSON.parse(xhr.responseText).message,
+              sound: false,
+              img: error_image,
             });
           },
         });
