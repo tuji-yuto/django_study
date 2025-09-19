@@ -6,8 +6,12 @@ from django.shortcuts import redirect# HTTP形式でのページ移動
 
 # Create your views here.
 
-def login_page(request):
-    return render(request, 'login.html') # login.htmlを表示する
+
+def home_view(request):
+     if request.user.is_authenticated: # ユーザーが認証されているかどうかをチェック
+          return render(request, 'dashboard.html') # dashboard.htmlを表示する
+     else: # ログインがまだなら
+          return render(request,'login.html') # login.htmlを表示する
 
 def login_process(request):# request : ユーザーから送られてくる情報が入っている
     if request.method == 'POST': # .methodにはget or postが入っている
@@ -18,9 +22,10 @@ def login_process(request):# request : ユーザーから送られてくる情�
             user = authenticate(username=username, password=password)# ユーザー認証を行う。成功するとuserオブジェクトが返る。失敗するとNoneが返る。
 
             if user is not None: # userがNoneじゃなかった場合
-                 login(request, user) # ログイン処理を行う
-                 print("ログイン成功") # 確認用。サーバーのコンソールに表示される。
-                 return JsonResponse({"status": "success","message":"ログインに成功しました"})
+                login(request, user) # ログイン処理を行う
+                print("ログイン成功") # 確認用。サーバーのコンソールに表示される。
+                return JsonResponse({"status": "success","message":"ログインに成功しました"})
+                
             else:#失敗したとき
-                 print("ログイン失敗") # 確認用。サーバーのコンソールに表示される。
-                 return JsonResponse({"status": "error","message":"ログインに失敗しました"},status=400) # status=400は認証エラーを意味する
+                print("ログイン失敗") # 確認用。サーバーのコンソールに表示される。
+                return JsonResponse({"status": "error","message":"ログインに失敗しました"},status=400) # status=400は認証エラーを意味する

@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('accounts.urls')), # ''は空文字で、何も指定しないことを意味する。つまりmyproject/までアクセスしたらaccountsアプリのurls.pyに処理を委譲する。
     path('accounts/', include('accounts.urls')),  # include関数：このパターンにマッチした場合、accountsアプリのurls.pyに処理を委譲する。
 ]
